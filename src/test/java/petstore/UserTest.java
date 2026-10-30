@@ -50,30 +50,18 @@ class UserTest extends BaseTest {
                 .statusCode(200);
     }
 
-    @ParameterizedTest // 3 test
-    @ValueSource(strings = {"available", "pending", "sold"})
-    void hayvanListesiDurumaGoreDoluGelir(String durum) {
-        given()
-                .spec(spec)
-                .queryParam("status", durum)
-                .when()
-                .get("/pet/findByStatus")
-                .then()
-                .statusCode(200)
-                .body("size()", greaterThan(0));
-    }
 
     //Yardımcı metotlar
 
     private User ornekUser() {
         return new User(
                 123321L,
-                "Xopfgh",
-                "Arda",
-                "Özel",
-                "arda@hotmail.com",
-                "1234",
-                "0544542",
+                "test_kullanici",
+                "Test",
+                "Kullanici",
+                "test@example.com",
+                "Test1234!",
+                "5550000000",
                 0
         );
     }

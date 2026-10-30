@@ -2,6 +2,8 @@ package petstore;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import petstore.model.Pet;
 
 import java.util.List;
@@ -14,41 +16,6 @@ class PetTest extends BaseTest {
 
     //Testler
 
-    @Test
-    void musaitHayvanListesiDoluGelir() {
-        given()
-                .spec(spec)
-                .queryParam("status", "available")
-                .when()
-                .get("/pet/findByStatus")
-                .then()
-                .statusCode(200)
-                .body("size()", greaterThan(0));
-    }
-
-    @Test
-    void satilmisHayvanListesiDoluGelir() {
-        given()
-                .spec(spec)
-                .queryParam("status", "sold")
-                .when()
-                .get("/pet/findByStatus")
-                .then()
-                .statusCode(200)
-                .body("size()", greaterThan(0));
-    }
-
-    @Test
-    void bekleyenHayvanListesiDoluGelir() {
-        given()
-                .spec(spec)
-                .queryParam("status", "pending")
-                .when()
-                .get("/pet/findByStatus")
-                .then()
-                .statusCode(200)
-                .body("size()", greaterThan(0));
-    }
 
     @Test
     void petOlusturulur() {
@@ -195,6 +162,18 @@ class PetTest extends BaseTest {
                 .then()
                 .statusCode(405);
 
+    }
+    @ParameterizedTest // 3 test
+    @ValueSource(strings = {"available", "pending", "sold"})
+    void hayvanListesiDurumaGoreDoluGelir(String durum) {
+        given()
+                .spec(spec)
+                .queryParam("status", durum)
+                .when()
+                .get("/pet/findByStatus")
+                .then()
+                .statusCode(200)
+                .body("size()", greaterThan(0));
     }
 
 
